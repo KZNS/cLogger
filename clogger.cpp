@@ -38,6 +38,10 @@ int Logger::to_level(std::string log_level, LogLevel &lv)
 }
 int Logger::log(LogLevel lv, const std::string &s)
 {
+    if (!logging)
+    {
+        return 0;
+    }
     if (lv >= level)
     {
         switch (lv)
@@ -79,6 +83,7 @@ Logger::Logger()
 {
     new_line = true;
     level = error;
+    logging = true;
 }
 Logger::Logger(const std::string &log_file) : Logger()
 {
@@ -111,6 +116,16 @@ int Logger::close()
         fout.close();
         new_line = true;
     }
+    return 0;
+}
+int Logger::start()
+{
+    logging = true;
+    return 0;
+}
+int Logger::stop()
+{
+    logging = false;
     return 0;
 }
 int Logger::log(const std::string &log_level, const std::string &format, ...)
