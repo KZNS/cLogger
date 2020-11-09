@@ -18,6 +18,14 @@ int main()
     logger.log("error", "error message 2.");
     logger.log("fatal", "fatal message 2.");
 
+    logger.stop();
+    logger.log("debug", "debug message 5.");
+    logger.log("info", "info message 5.");
+    logger.log("warn", "warn message 5. \n");
+    logger.start();
+    logger.log("error", "error message 5.");
+    logger.log("fatal", "fatal message 5.");
+
     logger.set_level("fATal");
 
     logger.log("debug", "debug message 3.");
