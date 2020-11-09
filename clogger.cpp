@@ -31,6 +31,7 @@ int Logger::to_level(std::string log_level, LogLevel &lv)
     }
     else
     {
+        log(fatal, "Warn log level.\n");
         return -1;
     }
     return 0;
@@ -142,7 +143,6 @@ int Logger::log(const std::string &log_level, const std::string &format, ...)
     LogLevel lv;
     if (to_level(log_level, lv))
     {
-        log(fatal, "Warn log level.\n");
         return -1;
     }
 
