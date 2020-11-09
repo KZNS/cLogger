@@ -26,6 +26,7 @@ private:
 public:
     Logger();
     Logger(const std::string &log_file);
+    int set_level(const std::string &log_level);
     int open(const std::string &log_file);
     int close();
     int log(const std::string &log_type, const std::string &format, ...);

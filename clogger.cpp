@@ -84,6 +84,16 @@ Logger::Logger(const std::string &log_file)
     fout.open(log_file);
     new_line = true;
 }
+int Logger::set_level(const std::string &log_level)
+{
+    LogLevel lv;
+    if (to_level(log_level, lv))
+    {
+        return -1;
+    }
+    level = lv;
+    return 0;
+}
 int Logger::open(const std::string &log_file)
 {
     if (fout.is_open())
