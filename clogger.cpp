@@ -78,11 +78,11 @@ int Logger::print(const std::string &s)
 Logger::Logger()
 {
     new_line = true;
+    level = error;
 }
-Logger::Logger(const std::string &log_file)
+Logger::Logger(const std::string &log_file) : Logger()
 {
     fout.open(log_file);
-    new_line = true;
 }
 int Logger::set_level(const std::string &log_level)
 {
