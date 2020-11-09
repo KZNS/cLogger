@@ -43,19 +43,19 @@ int Logger::log(LogLevel lv, const std::string &s)
         switch (lv)
         {
         case debug:
-            print("Debug: ");
+            print("debug: ");
             break;
         case info:
-            print("Info: ");
+            print("info: ");
             break;
         case warn:
-            print("Warn: ");
+            print("warn: ");
             break;
         case error:
-            print("Error: ");
+            print("error: ");
             break;
         case fatal:
-            print("Fatal: ");
+            print("fatal: ");
             break;
         }
         print(s);
