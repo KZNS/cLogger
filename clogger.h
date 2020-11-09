@@ -7,11 +7,21 @@
 class Logger
 {
 private:
+    enum LogLevel
+    {
+        debug,
+        info,
+        warn,
+        error,
+        fatal
+    };
     std::ofstream fout;
     bool new_line;
-    std::string last_tag;
-    std::string level;
-    int print(char *s);
+    LogLevel last_level;
+    LogLevel level;
+    int to_level(std::string log_level, LogLevel &lv);
+    int log(LogLevel lv, const std::string &s);
+    int print(const std::string &s);
 
 public:
     Logger();
