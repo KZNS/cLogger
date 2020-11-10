@@ -1,6 +1,6 @@
 #include "clogger.h"
 #include <cstdio>
-
+using namespace std;
 int main()
 {
     Logger logger;
@@ -11,6 +11,9 @@ int main()
     logger.log("fatal", "fatal message.");
 
     logger.set_level("debug");
+
+    int a = 1;
+    logger.log("debug", "%d %s", a, "2333");
 
     logger.log("debug", "debug message 2.");
     logger.log("info", "info message 2.");
