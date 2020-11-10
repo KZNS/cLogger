@@ -135,7 +135,7 @@ int Logger::log(const std::string &log_level, const std::string &format, ...)
 
     int num;
     char tmp[100];
-    num = sprintf(tmp, format.c_str(), ap);
+    num = vsprintf(tmp, format.c_str(), ap);
 
     va_end(ap);
 
