@@ -11,27 +11,27 @@ int Logger::to_level(std::string log_level, LogLevel &lv)
                    log_level.begin(), ::tolower);
     if (log_level == "debug")
     {
-        lv = debug;
+        lv = lldebug;
     }
     else if (log_level == "info")
     {
-        lv = info;
+        lv = llinfo;
     }
     else if (log_level == "warn")
     {
-        lv = warn;
+        lv = llwarn;
     }
     else if (log_level == "error")
     {
-        lv = error;
+        lv = llerror;
     }
     else if (log_level == "fatal")
     {
-        lv = fatal;
+        lv = llfatal;
     }
     else
     {
-        log(fatal, "Warn log level.\n");
+        log(llfatal, "Warn log level.\n");
         return -1;
     }
     return 0;
@@ -46,19 +46,19 @@ int Logger::log(LogLevel lv, const std::string &s)
     {
         switch (lv)
         {
-        case debug:
+        case lldebug:
             print("debug: ");
             break;
-        case info:
+        case llinfo:
             print("info: ");
             break;
-        case warn:
+        case llwarn:
             print("warn: ");
             break;
-        case error:
+        case llerror:
             print("error: ");
             break;
-        case fatal:
+        case llfatal:
             print("fatal: ");
             break;
         }
@@ -82,7 +82,7 @@ int Logger::print(const std::string &s)
 Logger::Logger()
 {
     new_line = true;
-    level = error;
+    level = llerror;
     logging = true;
 }
 Logger::Logger(const std::string &log_file) : Logger()
@@ -143,14 +143,14 @@ int Logger::log(const std::string &log_level, const std::string &format, ...)
     len = strlen(tmp);
     if (len == 0)
     {
-        log(fatal, "Empty log message.\n");
+        log(llfatal, "Empty log message.\n");
         return -1;
     }
     if (tmp[len - 1] == '\n')
     {
         if (len - 1 > 80)
         {
-            log(fatal, "Log message is to long.\n");
+            log(llfatal, "Log message is to long.\n");
             return -1;
         }
     }
@@ -158,7 +158,7 @@ int Logger::log(const std::string &log_level, const std::string &format, ...)
     {
         if (len > 80)
         {
-            log(fatal, "log message is to long.\n");
+            log(llfatal, "log message is to long.\n");
             return -1;
         }
         tmp[len] = '\n';
@@ -173,6 +173,56 @@ int Logger::log(const std::string &log_level, const std::string &format, ...)
 
     log(lv, tmp);
 
+    return 0;
+}
+int Logger::debug(const std::string &format, ...)
+{
+    va_list ap;
+    va_start(ap, format);
+
+    log("debug", format, ap);
+
+    va_end(ap);
+    return 0;
+}
+int Logger::info(const std::string &format, ...)
+{
+    va_list ap;
+    va_start(ap, format);
+
+    log("info", format, ap);
+
+    va_end(ap);
+    return 0;
+}
+int Logger::warn(const std::string &format, ...)
+{
+    va_list ap;
+    va_start(ap, format);
+
+    log("warn", format, ap);
+
+    va_end(ap);
+    return 0;
+}
+int Logger::error(const std::string &format, ...)
+{
+    va_list ap;
+    va_start(ap, format);
+
+    log("error", format, ap);
+
+    va_end(ap);
+    return 0;
+}
+int Logger::fatal(const std::string &format, ...)
+{
+    va_list ap;
+    va_start(ap, format);
+
+    log("fatal", format, ap);
+
+    va_end(ap);
     return 0;
 }
 
