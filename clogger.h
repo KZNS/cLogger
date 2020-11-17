@@ -9,11 +9,11 @@ class Logger
 private:
     enum LogLevel
     {
-        debug,
-        info,
-        warn,
-        error,
-        fatal
+        lldebug,
+        llinfo,
+        llwarn,
+        llerror,
+        llfatal
     };
     std::ofstream fout;
     bool new_line;
@@ -32,7 +32,12 @@ public:
     int close();
     int start();
     int stop();
-    int log(const std::string &log_type, const std::string &format, ...);
+    int log(const std::string &log_level, const std::string &format, ...);
+    int debug(const std::string &format, ...);
+    int info(const std::string &format, ...);
+    int warn(const std::string &format, ...);
+    int error(const std::string &format, ...);
+    int fatal(const std::string &format, ...);
 };
 
 #include "clogger.cpp"

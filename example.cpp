@@ -46,5 +46,13 @@ int main()
     logger.log("error", "error message 4.");
     logger.log("fatal", "fatal message 4.");
 
+    logger.close();
+
+    logger.debug("debug message 6.");
+    logger.info("info message 6.");
+    logger.warn("warn message 6. \n");
+    logger.error("error message 6.");
+    logger.fatal("fatal message 6.");
+
     return 0;
 }
