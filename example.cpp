@@ -48,11 +48,11 @@ int main()
 
     logger.close();
 
-    logger.debug("debug message 6.");
-    logger.info("info message 6.");
-    logger.warn("warn message 6. \n");
-    logger.error("error message 6.");
-    logger.fatal("fatal message 6.");
+    logger.debug("debug message 6. %d", 1);
+    logger.info("info message 6. %d", 1);
+    logger.warn("warn message 6. %d\n", 1);
+    logger.error("error message 6. %d", 1);
+    logger.fatal("fatal message 6. %d", 1);
 
     return 0;
 }

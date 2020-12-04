@@ -36,6 +36,41 @@ int Logger::to_level(std::string log_level, LogLevel &lv)
     }
     return 0;
 }
+int Logger::try_log(std::string log_level, std::string s)
+{
+    int len;
+    len = s.length();
+    if (len == 0)
+    {
+        log(llfatal, "Empty log message.\n");
+        return -1;
+    }
+    if (s[len - 1] == '\n')
+    {
+        if (len - 1 > 80)
+        {
+            log(llfatal, "Log message is to long.\n");
+            return -1;
+        }
+    }
+    else
+    {
+        if (len > 80)
+        {
+            log(llfatal, "log message is to long.\n");
+            return -1;
+        }
+        s = s + "\n";
+    }
+
+    LogLevel lv;
+    if (to_level(log_level, lv))
+    {
+        return -1;
+    }
+
+    return log(lv, s);
+}
 int Logger::log(LogLevel lv, const std::string &s)
 {
     if (!logging)
@@ -133,97 +168,72 @@ int Logger::log(const std::string &log_level, const std::string &format, ...)
     va_list ap;
     va_start(ap, format);
 
-    int num;
     char tmp[100];
-    num = vsprintf(tmp, format.c_str(), ap);
+    vsprintf(tmp, format.c_str(), ap);
 
     va_end(ap);
 
-    int len;
-    len = strlen(tmp);
-    if (len == 0)
-    {
-        log(llfatal, "Empty log message.\n");
-        return -1;
-    }
-    if (tmp[len - 1] == '\n')
-    {
-        if (len - 1 > 80)
-        {
-            log(llfatal, "Log message is to long.\n");
-            return -1;
-        }
-    }
-    else
-    {
-        if (len > 80)
-        {
-            log(llfatal, "log message is to long.\n");
-            return -1;
-        }
-        tmp[len] = '\n';
-        tmp[len + 1] = '\0';
-    }
-
-    LogLevel lv;
-    if (to_level(log_level, lv))
-    {
-        return -1;
-    }
-
-    log(lv, tmp);
-
-    return 0;
+    return try_log(log_level, tmp);
 }
 int Logger::debug(const std::string &format, ...)
 {
     va_list ap;
     va_start(ap, format);
 
-    log("debug", format, ap);
+    char tmp[100];
+    vsprintf(tmp, format.c_str(), ap);
 
     va_end(ap);
-    return 0;
+
+    return try_log("debug", tmp);
 }
 int Logger::info(const std::string &format, ...)
 {
     va_list ap;
     va_start(ap, format);
 
-    log("info", format, ap);
+    char tmp[100];
+    vsprintf(tmp, format.c_str(), ap);
 
     va_end(ap);
-    return 0;
+
+    return try_log("info", tmp);
 }
 int Logger::warn(const std::string &format, ...)
 {
     va_list ap;
     va_start(ap, format);
 
-    log("warn", format, ap);
+    char tmp[100];
+    vsprintf(tmp, format.c_str(), ap);
 
     va_end(ap);
-    return 0;
+
+    return try_log("warn", tmp);
 }
 int Logger::error(const std::string &format, ...)
 {
     va_list ap;
     va_start(ap, format);
 
-    log("error", format, ap);
+    char tmp[100];
+    vsprintf(tmp, format.c_str(), ap);
 
     va_end(ap);
-    return 0;
+
+    return try_log("error", tmp);
 }
 int Logger::fatal(const std::string &format, ...)
 {
     va_list ap;
     va_start(ap, format);
 
-    log("fatal", format, ap);
+    char tmp[100];
+    vsprintf(tmp, format.c_str(), ap);
 
     va_end(ap);
-    return 0;
+
+    return try_log("fatal", tmp);
 }
 
 #endif
