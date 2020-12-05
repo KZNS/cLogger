@@ -45,21 +45,8 @@ int Logger::try_log(std::string log_level, std::string s)
         log(llfatal, "Empty log message.\n");
         return -1;
     }
-    if (s[len - 1] == '\n')
+    if (s[len - 1] != '\n')
     {
-        if (len - 1 > 80)
-        {
-            log(llfatal, "Log message is to long.\n");
-            return -1;
-        }
-    }
-    else
-    {
-        if (len > 80)
-        {
-            log(llfatal, "log message is to long.\n");
-            return -1;
-        }
         s = s + "\n";
     }
 
@@ -168,7 +155,7 @@ int Logger::log(const std::string &log_level, const std::string &format, ...)
     va_list ap;
     va_start(ap, format);
 
-    vsprintf(buffer, format.c_str(), ap);
+    vsnprintf(buffer, 500, format.c_str(), ap);
 
     va_end(ap);
 
@@ -179,7 +166,7 @@ int Logger::debug(const std::string &format, ...)
     va_list ap;
     va_start(ap, format);
 
-    vsprintf(buffer, format.c_str(), ap);
+    vsnprintf(buffer, 500, format.c_str(), ap);
 
     va_end(ap);
 
@@ -190,7 +177,7 @@ int Logger::info(const std::string &format, ...)
     va_list ap;
     va_start(ap, format);
 
-    vsprintf(buffer, format.c_str(), ap);
+    vsnprintf(buffer, 500, format.c_str(), ap);
 
     va_end(ap);
 
@@ -201,7 +188,7 @@ int Logger::warn(const std::string &format, ...)
     va_list ap;
     va_start(ap, format);
 
-    vsprintf(buffer, format.c_str(), ap);
+    vsnprintf(buffer, 500, format.c_str(), ap);
 
     va_end(ap);
 
@@ -212,7 +199,7 @@ int Logger::error(const std::string &format, ...)
     va_list ap;
     va_start(ap, format);
 
-    vsprintf(buffer, format.c_str(), ap);
+    vsnprintf(buffer, 500, format.c_str(), ap);
 
     va_end(ap);
 
@@ -223,7 +210,7 @@ int Logger::fatal(const std::string &format, ...)
     va_list ap;
     va_start(ap, format);
 
-    vsprintf(buffer, format.c_str(), ap);
+    vsnprintf(buffer, 500, format.c_str(), ap);
 
     va_end(ap);
 
