@@ -20,6 +20,7 @@ private:
     LogLevel last_level;
     LogLevel level;
     bool logging;
+    char buffer[500];
     int to_level(std::string log_level, LogLevel &lv);
     int try_log(std::string log_level, std::string s);
     int log(LogLevel lv, const std::string &s);
