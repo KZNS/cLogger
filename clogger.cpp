@@ -36,18 +36,21 @@ int Logger::to_level(std::string log_level, LogLevel &lv)
     }
     return 0;
 }
-int Logger::try_log(std::string log_level, std::string s)
+int Logger::try_log(const std::string &log_level, const std::string format, va_list &ap)
 {
     int len;
-    len = s.length();
-    if (len == 0)
+    vsnprintf(buffer, 500, format.c_str(), ap);
+    len = strlen(buffer);
+
+    if (len == 0 || (len == 1 && buffer[0] == '\n'))
     {
         log(llfatal, "Empty log message.\n");
         return -1;
     }
-    if (s[len - 1] != '\n')
+    if (buffer[len - 1] != '\n')
     {
-        s = s + "\n";
+        buffer[len++] = '\n';
+        buffer[len] = '\0';
     }
 
     LogLevel lv;
@@ -56,7 +59,7 @@ int Logger::try_log(std::string log_level, std::string s)
         return -1;
     }
 
-    return log(lv, s);
+    return log(lv, buffer);
 }
 int Logger::log(LogLevel lv, const std::string &s)
 {
@@ -152,69 +155,69 @@ int Logger::stop()
 }
 int Logger::log(const std::string &log_level, const std::string format, ...)
 {
+    int e;
     va_list ap;
     va_start(ap, format);
 
-    vsnprintf(buffer, 500, format.c_str(), ap);
+    e = try_log(log_level, format, ap);
 
     va_end(ap);
-
-    return try_log(log_level, buffer);
+    return e;
 }
 int Logger::debug(const std::string format, ...)
 {
+    int e;
     va_list ap;
     va_start(ap, format);
 
-    vsnprintf(buffer, 500, format.c_str(), ap);
+    e = try_log("debug", format, ap);
 
     va_end(ap);
-
-    return try_log("debug", buffer);
+    return e;
 }
 int Logger::info(const std::string format, ...)
 {
+    int e;
     va_list ap;
     va_start(ap, format);
 
-    vsnprintf(buffer, 500, format.c_str(), ap);
+    e = try_log("info", format, ap);
 
     va_end(ap);
-
-    return try_log("info", buffer);
+    return e;
 }
 int Logger::warn(const std::string format, ...)
 {
+    int e;
     va_list ap;
     va_start(ap, format);
 
-    vsnprintf(buffer, 500, format.c_str(), ap);
+    e = try_log("warn", format, ap);
 
     va_end(ap);
-
-    return try_log("warn", buffer);
+    return e;
 }
 int Logger::error(const std::string format, ...)
 {
+    int e;
     va_list ap;
     va_start(ap, format);
 
-    vsnprintf(buffer, 500, format.c_str(), ap);
+    e = try_log("error", format, ap);
 
     va_end(ap);
-
-    return try_log("error", buffer);
+    return e;
 }
 int Logger::fatal(const std::string format, ...)
 {
+    int e;
     va_list ap;
     va_start(ap, format);
 
-    vsnprintf(buffer, 500, format.c_str(), ap);
+    e = try_log("fatal", format, ap);
 
     va_end(ap);
-
-    return try_log("fatal", buffer);
+    return e;
 }
 
 #endif
