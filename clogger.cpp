@@ -150,7 +150,7 @@ int Logger::stop()
     logging = false;
     return 0;
 }
-int Logger::log(const std::string &log_level, const std::string &format, ...)
+int Logger::log(const std::string &log_level, const std::string format, ...)
 {
     va_list ap;
     va_start(ap, format);
@@ -161,7 +161,7 @@ int Logger::log(const std::string &log_level, const std::string &format, ...)
 
     return try_log(log_level, buffer);
 }
-int Logger::debug(const std::string &format, ...)
+int Logger::debug(const std::string format, ...)
 {
     va_list ap;
     va_start(ap, format);
@@ -172,7 +172,7 @@ int Logger::debug(const std::string &format, ...)
 
     return try_log("debug", buffer);
 }
-int Logger::info(const std::string &format, ...)
+int Logger::info(const std::string format, ...)
 {
     va_list ap;
     va_start(ap, format);
@@ -183,7 +183,7 @@ int Logger::info(const std::string &format, ...)
 
     return try_log("info", buffer);
 }
-int Logger::warn(const std::string &format, ...)
+int Logger::warn(const std::string format, ...)
 {
     va_list ap;
     va_start(ap, format);
@@ -194,7 +194,7 @@ int Logger::warn(const std::string &format, ...)
 
     return try_log("warn", buffer);
 }
-int Logger::error(const std::string &format, ...)
+int Logger::error(const std::string format, ...)
 {
     va_list ap;
     va_start(ap, format);
@@ -205,7 +205,7 @@ int Logger::error(const std::string &format, ...)
 
     return try_log("error", buffer);
 }
-int Logger::fatal(const std::string &format, ...)
+int Logger::fatal(const std::string format, ...)
 {
     va_list ap;
     va_start(ap, format);

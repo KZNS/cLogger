@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <cstdarg>
 
 class Logger
 {
@@ -17,7 +18,6 @@ private:
     };
     std::ofstream fout;
     bool new_line;
-    LogLevel last_level;
     LogLevel level;
     bool logging;
     char buffer[500];
@@ -34,12 +34,12 @@ public:
     int close();
     int start();
     int stop();
-    int log(const std::string &log_level, const std::string &format, ...);
-    int debug(const std::string &format, ...);
-    int info(const std::string &format, ...);
-    int warn(const std::string &format, ...);
-    int error(const std::string &format, ...);
-    int fatal(const std::string &format, ...);
+    int log(const std::string &log_level, const std::string format, ...);
+    int debug(const std::string format, ...);
+    int info(const std::string format, ...);
+    int warn(const std::string format, ...);
+    int error(const std::string format, ...);
+    int fatal(const std::string format, ...);
 };
 
 #include "clogger.cpp"
