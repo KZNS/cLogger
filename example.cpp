@@ -54,5 +54,23 @@ int main()
     logger.error("error message 6. %d", 1);
     logger.fatal("fatal message 6. %d", 1);
 
+    if (logger.has_log())
+    {
+        printf("has log\n");
+    }
+    if (logger.has_error())
+    {
+        printf("has error\n");
+    }
+    logger.reset_error();
+    if (logger.has_error())
+    {
+        printf("has error\n");
+    }
+    else
+    {
+        printf("has not error\n");
+    }
+
     return 0;
 }
