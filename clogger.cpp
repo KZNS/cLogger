@@ -99,26 +99,24 @@ int Logger::log(LogLevel lv, const std::string &s)
 }
 int Logger::print(const std::string &s)
 {
-    if (fout.is_open())
-    {
-        fout << s;
-    }
-    else
-    {
-        std::cout << s;
-    }
+    *out << s;
     return 0;
 }
 Logger::Logger()
 {
-    new_line = true;
     level = llerror;
     logging = true;
+    out = &std::cout;
+    using_new_stream = false;
     reset_log();
 }
 Logger::Logger(const std::string &log_file) : Logger()
 {
-    fout.open(log_file);
+    open(log_file);
+}
+Logger::Logger(std::ostream &out_stream) : Logger()
+{
+    open(out_stream);
 }
 int Logger::set_level(const std::string &log_level)
 {
@@ -132,20 +130,29 @@ int Logger::set_level(const std::string &log_level)
 }
 int Logger::open(const std::string &log_file)
 {
-    if (fout.is_open())
-    {
-        fout.close();
-    }
-    fout.open(log_file);
-    new_line = true;
+    close();
+    out = new std::ofstream(log_file);
+    using_new_stream = true;
+    return 0;
+}
+int Logger::open(std::ostream &out_stream)
+{
+
+    close();
+    out = &out_stream;
+    using_new_stream = false;
     return 0;
 }
 int Logger::close()
 {
-    if (fout.is_open())
+    if (out)
     {
-        fout.close();
-        new_line = true;
+        if (using_new_stream)
+        {
+            delete out;
+        }
+        out = &std::cout;
+        using_new_stream = false;
     }
     return 0;
 }

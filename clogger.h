@@ -16,8 +16,8 @@ private:
         llerror,
         llfatal
     };
-    std::ofstream fout;
-    bool new_line;
+    std::ostream *out;
+    bool using_new_stream;
     LogLevel level;
     bool logging;
     char buffer[500];
@@ -31,8 +31,10 @@ private:
 public:
     Logger();
     Logger(const std::string &log_file);
+    Logger(std::ostream &out_stream);
     int set_level(const std::string &log_level);
     int open(const std::string &log_file);
+    int open(std::ostream &out_stream);
     int close();
     int start();
     int stop();
