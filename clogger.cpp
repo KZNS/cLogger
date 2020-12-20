@@ -72,18 +72,23 @@ int Logger::log(LogLevel lv, const std::string &s)
         switch (lv)
         {
         case lldebug:
+            debuged = true;
             print("debug: ");
             break;
         case llinfo:
+            infoed = true;
             print("info: ");
             break;
         case llwarn:
+            warned = true;
             print("warn: ");
             break;
         case llerror:
+            errored = true;
             print("error: ");
             break;
         case llfatal:
+            fataled = true;
             print("fatal: ");
             break;
         }
@@ -94,25 +99,24 @@ int Logger::log(LogLevel lv, const std::string &s)
 }
 int Logger::print(const std::string &s)
 {
-    if (fout.is_open())
-    {
-        fout << s;
-    }
-    else
-    {
-        std::cout << s;
-    }
+    *out << s;
     return 0;
 }
 Logger::Logger()
 {
-    new_line = true;
     level = llerror;
     logging = true;
+    out = &std::cout;
+    using_new_stream = false;
+    reset_log();
 }
 Logger::Logger(const std::string &log_file) : Logger()
 {
-    fout.open(log_file);
+    open(log_file);
+}
+Logger::Logger(std::ostream &out_stream) : Logger()
+{
+    open(out_stream);
 }
 int Logger::set_level(const std::string &log_level)
 {
@@ -126,20 +130,29 @@ int Logger::set_level(const std::string &log_level)
 }
 int Logger::open(const std::string &log_file)
 {
-    if (fout.is_open())
-    {
-        fout.close();
-    }
-    fout.open(log_file);
-    new_line = true;
+    close();
+    out = new std::ofstream(log_file);
+    using_new_stream = true;
+    return 0;
+}
+int Logger::open(std::ostream &out_stream)
+{
+
+    close();
+    out = &out_stream;
+    using_new_stream = false;
     return 0;
 }
 int Logger::close()
 {
-    if (fout.is_open())
+    if (out)
     {
-        fout.close();
-        new_line = true;
+        if (using_new_stream)
+        {
+            delete out;
+        }
+        out = &std::cout;
+        using_new_stream = false;
     }
     return 0;
 }
@@ -219,5 +232,19 @@ int Logger::fatal(const std::string format, ...)
     va_end(ap);
     return e;
 }
+
+bool Logger::has_log() { return (debuged || infoed || warned || errored || fataled); }
+bool Logger::has_debug() { return debuged; }
+bool Logger::has_info() { return infoed; }
+bool Logger::has_warn() { return warned; }
+bool Logger::has_error() { return errored; }
+bool Logger::has_fatal() { return fataled; }
+
+void Logger::reset_log() { debuged = infoed = warned = errored = fataled = false; }
+void Logger::reset_debug() { debuged = false; }
+void Logger::reset_info() { infoed = false; }
+void Logger::reset_warn() { warned = false; }
+void Logger::reset_error() { errored = false; }
+void Logger::reset_fatal() { fataled = false; }
 
 #endif

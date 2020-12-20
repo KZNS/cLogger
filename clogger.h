@@ -16,11 +16,13 @@ private:
         llerror,
         llfatal
     };
-    std::ofstream fout;
-    bool new_line;
+    std::ostream *out;
+    bool using_new_stream;
     LogLevel level;
     bool logging;
     char buffer[500];
+    bool logged, debuged, infoed, warned, errored, fataled;
+
     int to_level(std::string log_level, LogLevel &lv);
     int try_log(const std::string &log_level, const std::string format, va_list &ap);
     int log(LogLevel lv, const std::string &s);
@@ -29,8 +31,10 @@ private:
 public:
     Logger();
     Logger(const std::string &log_file);
+    Logger(std::ostream &out_stream);
     int set_level(const std::string &log_level);
     int open(const std::string &log_file);
+    int open(std::ostream &out_stream);
     int close();
     int start();
     int stop();
@@ -40,6 +44,20 @@ public:
     int warn(const std::string format, ...);
     int error(const std::string format, ...);
     int fatal(const std::string format, ...);
+    
+    bool has_log();
+    bool has_debug();
+    bool has_info();
+    bool has_warn();
+    bool has_error();
+    bool has_fatal();
+    
+    void reset_log();
+    void reset_debug();
+    void reset_info();
+    void reset_warn();
+    void reset_error();
+    void reset_fatal();
 };
 
 #include "clogger.cpp"
